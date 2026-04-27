@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デマンドとニーズの違い｜就労移行支援</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --demand: #D95F1C;
+      --demand-light: #FFF3EA;
+      --demand-mid: #F8C49A;
+      --needs: #1A56C4;
+      --needs-light: #EEF4FF;
+      --needs-mid: #B3CCEF;
+      --integration: #0A8A7E;
+      --integration-light: #E6F7F5;
+      --integration-mid: #7DD9D0;
+      --bg: #F0F3F8;
+      --surface: #FFFFFF;
+      --text: #0D1826;
+      --text-secondary: #445066;
+      --text-muted: #8898AA;
+      --border: #DDE3EE;
+      --shadow: 0 1px 3px rgba(13,24,38,0.07), 0 4px 16px rgba(13,24,38,0.05);
+      --shadow-lg: 0 8px 32px rgba(13,24,38,0.10);
+      --radius: 12px;
+      --radius-lg: 18px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px}
+
+    /* Progress bar */
+    #progress-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--demand),var(--integration),var(--needs));z-index:200;transition:width .1s linear}
+
+    /* Reveal */
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .d1{transition-delay:.08s}.d2{transition-delay:.18s}.d3{transition-delay:.28s}.d4{transition-delay:.38s}
+
+    /* Layout */
+    .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+
+    /* ─── HERO ─── */
+    .hero{background:linear-gradient(150deg,#0A1628 0%,#152340 50%,#0D1F3A 100%);color:#fff;padding:80px 20px 72px;text-align:center;position:relative;overflow:hidden}
+    .hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 35% 40%,rgba(26,86,196,.18) 0%,transparent 58%),radial-gradient(ellipse at 72% 65%,rgba(217,95,28,.13) 0%,transparent 58%);pointer-events:none}
+    .hero-badge{display:inline-block;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:100px;padding:6px 18px;font-size:11px;font-weight:700;letter-spacing:.15em;color:rgba(255,255,255,.7);margin-bottom:28px;text-transform:uppercase}
+    .hero h1{font-family:'Noto Serif JP',serif;font-size:clamp(26px,5.5vw,46px);font-weight:700;line-height:1.35;margin-bottom:18px;position:relative;z-index:1}
+    .hero h1 em{font-style:normal;color:#F8C49A}
+    .hero-sub{font-size:14.5px;color:rgba(255,255,255,.62);max-width:520px;margin:0 auto 44px;line-height:1.85;position:relative;z-index:1}
+    .hero-defs{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;position:relative;z-index:1}
+    .hero-def{text-align:center}
+    .hero-def .word{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;letter-spacing:.1em;display:block;margin-bottom:5px}
+    .hero-def .kana{font-size:19px;font-weight:700;display:block;margin-bottom:4px}
+    .hero-def .desc{font-size:11px;color:rgba(255,255,255,.45);letter-spacing:.05em}
+    .hero-def.d .word{color:#F8A56A}.hero-def.d .kana{color:#FDCBA0}
+    .hero-def.n .word{color:#90B8F2}.hero-def.n .kana{color:#B8D0F8}
+    .hero-sep{display:flex;align-items:center;color:rgba(255,255,255,.2);font-size:20px;font-weight:300;padding-top:10px}
+    .scroll-hint{margin-top:40px;color:rgba(255,255,255,.3);font-size:12px;animation:bob 2.2s ease-in-out infinite;position:relative;z-index:1}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+    /* ─── SECTIONS ─── */
+    .section{padding:60px 0}
+    .section-alt{background:#fff;padding:60px 0}
+    .section-dark{background:#0D1826;padding:60px 0}
+
+    .sec-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+    .sec-tag::before{content:'';display:inline-block;width:22px;height:2px;background:currentColor;border-radius:2px}
+    .section-dark .sec-tag{color:rgba(255,255,255,.35)}
+    .sec-title{font-family:'Noto Serif JP',serif;font-size:clamp(19px,4vw,27px);font-weight:700;line-height:1.4;margin-bottom:14px;color:var(--text)}
+    .section-dark .sec-title{color:#fff}
+    .sec-lead{font-size:14.5px;color:var(--text-secondary);line-height:1.85;margin-bottom:32px}
+    .section-dark .sec-lead{color:rgba(255,255,255,.6)}
+
+    /* ─── CARDS ─── */
+    .card{background:var(--surface);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);border:1px solid var(--border)}
+    .def-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+    @media(max-width:580px){.def-grid{grid-template-columns:1fr}}
+    .def-card{border-radius:var(--radius);padding:22px 22px 20px;border:1px solid var(--border);background:var(--surface);box-shadow:var(--shadow)}
+    .def-card.dc{border-top:4px solid var(--demand)}
+    .def-card.nc{border-top:4px solid var(--needs)}
+    .def-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+    .dc .def-icon{background:var(--demand-light)}
+    .nc .def-icon{background:var(--needs-light)}
+    .def-type{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+    .dc .def-type{color:var(--demand)}.nc .def-type{color:var(--needs)}
+    .def-card h3{font-size:18px;font-weight:700;margin-bottom:9px}
+    .def-card p{font-size:13.5px;color:var(--text-secondary);line-height:1.78;margin-bottom:13px}
+    .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+    .tag{font-size:11.5px;padding:3px 10px;border-radius:100px;font-weight:600}
+    .td{background:var(--demand-light);color:var(--demand)}
+    .tn{background:var(--needs-light);color:var(--needs)}
+    .ti{background:var(--integration-light);color:var(--integration)}
+    .quote-pill{background:var(--demand-light);border-radius:10px;padding:11px 15px;font-size:13px;line-height:1.65;color:var(--text);font-style:italic;border:1px solid var(--demand-mid);margin-top:13px}
+    .needs-pill{background:var(--needs-light);border-radius:10px;padding:11px 15px;font-size:13px;line-height:1.65;color:var(--text);border:1px solid var(--needs-mid);margin-top:13px}
+
+    /* ─── TABLE ─── */
+    .cmp-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);font-size:13px}
+    .cmp-table th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+    .cmp-table th:first-child{background:#F6F8FB;color:var(--text-muted)}
+    .cmp-table th.th-d{background:var(--demand-light);color:var(--demand)}
+    .cmp-table th.th-n{background:var(--needs-light);color:var(--needs)}
+    .cmp-table td{padding:11px 16px;border-top:1px solid var(--border);vertical-align:top;line-height:1.65}
+    .cmp-table tr td:first-child{font-weight:600;font-size:12px;color:var(--text-secondary);background:#FAFBFC;white-space:nowrap}
+
+    /* ─── INSIGHT BOX ─── */
+    .insight{background:linear-gradient(135deg,var(--integration-light),var(--needs-light));border:1px solid var(--integration-mid);border-radius:var(--radius);padding:22px 24px;margin:20px 0}
+    .insight h4{font-size:15px;font-weight:700;color:var(--integration);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+    .insight p{font-size:13.5px;line-height:1.82;color:var(--text)}
+    .insight-dark{background:rgba(13,138,126,.14);border:1px solid rgba(13,138,126,.3);border-radius:var(--radius);padding:22px 24px;margin:20px 0}
+    .insight-dark h4{font-size:15px;font-weight:700;color:#2DD4BF;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+    .insight-dark p{font-size:13.5px;line-height:1.82;color:rgba(255,255,255,.82)}
+
+    /* ─── CASE STUDY ─── */
+    .case-box{background:var(--surface);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-lg);margin:20px 0}
+    .case-head{background:linear-gradient(135deg,#152340,#0A1628);padding:20px 24px;display:flex;align-items:center;gap:14px}
+    .case-avatar{width:48px;height:48px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.2);flex-shrink:0}
+    .case-meta h4{font-size:15px;font-weight:700;color:#fff;margin-bottom:2px}
+    .case-meta p{font-size:12.5px;color:rgba(255,255,255,.5)}
+    .case-body{padding:22px 24px}
+    .case-item{border-radius:9px;padding:14px 17px;margin-bottom:12px;display:flex;flex-direction:column;gap:5px}
+    .ci-d{background:var(--demand-light);border-left:3px solid var(--demand)}
+    .ci-n{background:var(--needs-light);border-left:3px solid var(--needs)}
+    .ci-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    .ci-d .ci-label{color:var(--demand)}.ci-n .ci-label{color:var(--needs)}
+    .ci-text{font-size:13.5px;line-height:1.72;color:var(--text)}
+    .case-mid{text-align:center;padding:10px 0;font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:8px}
+    .case-mid::before,.case-mid::after{content:'';flex:1;height:1px;background:var(--border)}
+    .if-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+    @media(max-width:520px){.if-grid{grid-template-columns:1fr}}
+    .if-item{border-radius:9px;padding:13px 15px}
+    .if-bad-d{background:#FEF2F2;border:1px solid #FECACA}
+    .if-bad-n{background:var(--needs-light);border:1px solid var(--needs-mid)}
+    .if-label{font-size:10.5px;font-weight:700;letter-spacing:.09em;margin-bottom:5px}
+    .if-bad-d .if-label{color:#DC2626}.if-bad-n .if-label{color:var(--needs)}
+    .if-text{font-size:12.5px;line-height:1.65}
+    .if-bad-d .if-text{color:#7F1D1D}.if-bad-n .if-text{color:#1E3A8A}
+
+    /* ─── PATTERNS ─── */
+    .patt-list{display:flex;flex-direction:column;gap:14px}
+    .patt-card{background:var(--surface);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;gap:18px;align-items:flex-start}
+    .patt-icon{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .pi-orange{background:#FEF3C7}
+    .pi-green{background:#F0FDF4}
+    .pi-purple{background:#FAF5FF}
+    .patt-body h4{font-size:15.5px;font-weight:700;margin-bottom:6px}
+    .patt-body>p{font-size:13px;color:var(--text-secondary);line-height:1.72;margin-bottom:11px}
+    .ex-box{background:var(--bg);border-radius:8px;padding:11px 14px;font-size:12.5px;line-height:1.72}
+    .el{font-weight:700;font-size:10.5px;letter-spacing:.1em;display:block;margin-bottom:2px}
+    .el-d{color:var(--demand)}.el-n{color:var(--needs)}
+    .bg-label{font-size:11px;background:#F8FAFC;border:1px solid var(--border);border-radius:100px;padding:3px 10px;color:var(--text-muted);display:inline-block;margin-top:10px}
+
+    /* ─── BRADSHAW ─── */
+    .bshaw-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+    @media(max-width:520px){.bshaw-grid{grid-template-columns:1fr}}
+    .bshaw-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+    .bshaw-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);margin-bottom:3px}
+    .bshaw-name{font-size:14px;font-weight:700;margin-bottom:6px}
+    .bshaw-desc{font-size:12.5px;color:var(--text-secondary);line-height:1.68}
+    .bshaw-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 9px;border-radius:100px;margin-top:8px;letter-spacing:.07em}
+
+    /* ─── FLOW STEPS ─── */
+    .flow-steps{display:flex;flex-direction:column}
+    .flow-step{display:flex;gap:18px;align-items:flex-start}
+    .flow-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+    .flow-num{width:34px;height:34px;border-radius:50%;background:var(--integration);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:'DM Mono',monospace;flex-shrink:0;z-index:1}
+    .flow-connector{width:2px;flex:1;min-height:28px;background:linear-gradient(to bottom,var(--integration),var(--integration-mid));margin:3px 0}
+    .flow-content{padding-bottom:26px;padding-top:5px;flex:1}
+    .flow-content h4{font-size:15px;font-weight:700;margin-bottom:5px;color:var(--text)}
+    .flow-content p{font-size:13px;color:var(--text-secondary);line-height:1.75}
+    .flow-sub{border-radius:8px;padding:10px 14px;font-size:13px;line-height:1.65;color:var(--text);margin-top:10px;border:1px solid}
+    .flow-sub-i{background:var(--integration-light);border-color:var(--integration-mid)}
+    .flow-sub-d{background:var(--demand-light);border-color:var(--demand-mid)}
+    .flow-sub-n{background:var(--needs-light);border-color:var(--needs-mid)}
+    .flow-step-result{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .res-ok{padding:7px 13px;background:#F0FDF4;border-radius:8px;font-size:12px;color:#16A34A;border:1px solid #BBF7D0}
+    .res-warn{padding:7px 13px;background:var(--demand-light);border-radius:8px;font-size:12px;color:var(--demand);border:1px solid var(--demand-mid)}
+
+    /* ─── INTEGRATION BRIDGE ─── */
+    .bridge{background:var(--bg);border-radius:var(--radius-lg);padding:26px;margin:20px 0}
+    .bridge-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:9px;margin-bottom:4px}
+    .bridge-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .bridge-row.dr{background:var(--demand-light)}.bridge-row.nr{background:var(--needs-light)}
+    .bridge-row.dr .bridge-icon{background:rgba(217,95,28,.15)}
+    .bridge-row.nr .bridge-icon{background:rgba(26,86,196,.15)}
+    .bridge-row span{font-size:14.5px;font-weight:700;color:var(--text)}
+    .bridge-row.nr span{color:var(--needs)}
+    .bridge-arrow{display:flex;justify-content:center;align-items:center;padding:4px 0;position:relative}
+    .bridge-arrow-line{width:2px;height:36px;background:linear-gradient(to bottom,var(--demand),var(--integration));margin:0 auto}
+    .bridge-center{position:absolute;background:#fff;border:2px solid var(--integration);border-radius:100px;padding:4px 14px;font-size:11.5px;font-weight:700;color:var(--integration);white-space:nowrap}
+    .bridge-list{background:var(--integration-light);border-radius:var(--radius);padding:14px 18px;margin:10px 0;border:1px solid var(--integration-mid)}
+    .bridge-list-title{font-size:11px;font-weight:700;color:var(--integration);letter-spacing:.1em;margin-bottom:8px;text-transform:uppercase}
+    .bridge-list ul{margin-left:15px;font-size:13px;line-height:2.15;color:var(--text)}
+
+    /* ─── ETHICS ─── */
+    .ethics-scale{background:var(--surface);border-radius:var(--radius);padding:26px 24px;box-shadow:var(--shadow);margin:20px 0}
+    .scale-ends{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14px}
+    .scale-end{max-width:170px}
+    .scale-end.left{text-align:left}.scale-end.right{text-align:right}
+    .scale-end-label{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;display:block}
+    .scale-end.left .scale-end-label{color:var(--demand)}
+    .scale-end.right .scale-end-label{color:var(--needs)}
+    .scale-end-desc{font-size:12px;color:var(--text-secondary);line-height:1.55}
+    .scale-center-label{text-align:center;padding:0 8px}
+    .scale-center-label span{font-size:11px;font-weight:700;color:var(--integration);display:block;margin-bottom:4px}
+    .scale-center-label small{font-size:11px;color:var(--text-muted)}
+    .scale-track{height:9px;border-radius:100px;background:linear-gradient(to right,var(--demand),var(--integration) 50%,var(--needs));margin-bottom:10px}
+    .scale-pointer{display:flex;justify-content:center}
+    .scale-pointer-dot{width:13px;height:13px;background:var(--integration);border-radius:50%;border:2.5px solid #fff;box-shadow:0 0 0 2.5px var(--integration)}
+    .risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+    @media(max-width:520px){.risk-grid{grid-template-columns:1fr}}
+    .risk-d{background:#FEF7F1;border-radius:10px;padding:16px;border:1px solid var(--demand-mid)}
+    .risk-n{background:var(--needs-light);border-radius:10px;padding:16px;border:1px solid var(--needs-mid)}
+    .risk-label{font-size:10.5px;font-weight:700;letter-spacing:.1em;margin-bottom:8px;text-transform:uppercase}
+    .risk-d .risk-label{color:var(--demand)}.risk-n .risk-label{color:var(--needs)}
+    .risk-items{margin-left:14px;font-size:12.5px;line-height:2.1}
+    .risk-d .risk-items{color:#7C2D12}.risk-n .risk-items{color:#1E3A8A}
+    .ethics-q{background:var(--bg);border-radius:10px;padding:16px 18px;margin-top:12px;font-size:13px;color:var(--text-secondary);line-height:1.8}
+    .ethics-q strong{color:var(--integration);display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+
+    /* ─── SUMMARY ─── */
+    .summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+    @media(max-width:580px){.summary-grid{grid-template-columns:1fr}}
+    .sum-card{background:var(--surface);border-radius:var(--radius);padding:20px 18px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow)}
+    .sum-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 13px}
+    .sum-card h4{font-size:14px;font-weight:700;margin-bottom:7px}
+    .sum-card p{font-size:12px;color:var(--text-secondary);line-height:1.65}
+    .closing-block{background:#0D1826;border-radius:var(--radius-lg);padding:30px 26px;text-align:center;margin-top:0}
+    .closing-text{font-family:'Noto Serif JP',serif;font-size:16.5px;line-height:1.95;color:rgba(255,255,255,.88)}
+    .closing-text em{font-style:normal;color:#F8C49A}
+
+    /* ─── QUOTE ─── */
+    .qt{border-left:3px solid var(--integration);padding:14px 18px;background:var(--surface);border-radius:0 9px 9px 0;margin:18px 0}
+    .qt-text{font-size:14px;font-style:italic;color:var(--text);line-height:1.8;margin-bottom:6px}
+    .qt-src{font-size:11.5px;color:var(--text-muted)}
+
+    /* ─── WARNING BANNER ─── */
+    .warn{background:#FFF7F1;border:1px solid var(--demand-mid);border-left:4px solid var(--demand);border-radius:0 var(--radius) var(--radius) 0;padding:12px 16px;font-size:13px;line-height:1.72;margin:14px 0;color:#7C2D12}
+    .warn strong{color:var(--demand)}
+
+    /* ─── FOOTER ─── */
+    .footer-section{background:#0A1325;padding:52px 0}
+    .footer-section .sec-tag{color:rgba(255,255,255,.32)}
+    .footer-section .sec-title{color:#fff;margin-bottom:6px}
+    .sources{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:22px}
+    .sources li{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:13px 17px}
+    .sources a{color:#93C5FD;text-decoration:none;font-size:13.5px;font-weight:500;display:block;margin-bottom:3px}
+    .sources a:hover{text-decoration:underline;color:#BFDBFE}
+    .source-note{font-size:11.5px;color:rgba(255,255,255,.38)}
+    .footer-note{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);text-align:center;font-size:11px;color:rgba(255,255,255,.25);line-height:1.8}
+  </style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div style="position:relative;z-index:1">
+    <div class="hero-badge">就労移行支援　支援の核心概念</div>
+    <h1>あなたは、利用者の<em>「何」</em>に<br>応えていますか？</h1>
+    <p class="hero-sub">「早く就職したい」という言葉の裏側には、何が隠れているか。<br>デマンドとニーズ――この2つを区別できるかどうかが、<br>支援の質を根本から左右します。</p>
+    <div class="hero-defs">
+      <div class="hero-def d">
+        <span class="word">DEMAND</span>
+        <span class="kana">デマンド</span>
+        <span class="desc">表明された要求</span>
+      </div>
+      <div class="hero-sep">≠</div>
+      <div class="hero-def n">
+        <span class="word">NEEDS</span>
+        <span class="kana">ニーズ</span>
+        <span class="desc">本当に必要なもの</span>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12l7 7 7-7"/></svg><br>スクロールして理解を深める
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 01 DEFINITION ═══════════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-tag">01 — 定義</span>
+      <h2 class="sec-title">2つの言葉が指すもの</h2>
+      <p class="sec-lead">日本語では「ニーズ」と「デマンド」はどちらも「要望」「必要性」のように使われます。しかし支援の専門的な文脈では、この2つは明確に異なる概念です。</p>
+    </div>
+
+    <div class="def-grid">
+      <div class="def-card dc reveal d1">
+        <div class="def-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--demand)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="def-type">DEMAND / デマンド</div>
+        <h3>表明された要求</h3>
+        <p>利用者が<strong>言葉にして伝える</strong>「こうしてほしい」という要求や希望のこと。本人の主観的な見方・現状認識・感情を反映しています。</p>
+        <div class="tags">
+          <span class="tag td">主観的</span>
+          <span class="tag td">言語化済み</span>
+          <span class="tag td">表面に現れる</span>
+        </div>
+        <div class="quote-pill">「もう3ヶ月通ったし、そろそろ就職させてほしい」</div>
+      </div>
+      <div class="def-card nc reveal d2">
+        <div class="def-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--needs)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <div class="def-type">NEEDS / ニーズ</div>
+        <h3>本当に必要なもの</h3>
+        <p>支援者が<strong>アセスメント（評価・見立て）を通じて</strong>明らかにする、課題を乗り越えるために客観的に必要なもの。本人が気づいていないこともあります。</p>
+        <div class="tags">
+          <span class="tag tn">客観的</span>
+          <span class="tag tn">アセスメントで明確化</span>
+          <span class="tag tn">本質的</span>
+        </div>
+        <div class="needs-pill">睡眠リズムの安定・ストレス対処スキルの習得・体力づくりが先決</div>
+      </div>
+    </div>
+
+    <div class="insight reveal d3">
+      <h4>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--integration)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        重要な前提：どちらも「本物」の情報
+      </h4>
+      <p>デマンドは「間違った要求」ではありません。本人の意欲・価値観・不安の表れとして大切にすべきものです。一方でニーズは「支援者が正しいと思うもの」ではなく、客観的なアセスメントによって根拠をもって示されるものです。支援の難しさは、この2つが食い違うときにあります。</p>
+    </div>
+
+    <!-- 比較表 -->
+    <div class="reveal" style="margin-top:8px">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th>比較軸</th>
+            <th class="th-d">デマンド</th>
+            <th class="th-n">ニーズ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>誰が判断するか</td><td>利用者本人</td><td>支援者・専門職（アセスメントによる）</td></tr>
+          <tr><td>どこから生まれるか</td><td>本人の主観・感情・現状認識</td><td>客観的評価・生活上の課題の分析</td></tr>
+          <tr><td>言語化されているか</td><td>明示的に表明されている</td><td>表明されないこともある（潜在的ニーズ）</td></tr>
+          <tr><td>支援における役割</td><td>支援の入口・動機づけの源</td><td>支援目標設定の根拠</td></tr>
+          <tr><td>無視したときのリスク</td><td>自己決定の侵害・関係悪化</td><td>本質課題の未解決・早期離職</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 02 CASE STUDY ═══════════════ -->
+<section class="section-dark">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-tag">02 — ケーススタディ</span>
+      <h2 class="sec-title">Aさんの場合：言葉の裏に何があるか</h2>
+      <p class="sec-lead">就労移行支援の現場でよく見られる事例を通して、デマンドとニーズの乖離を具体的に見ていきましょう。</p>
+    </div>
+
+    <div class="case-box reveal">
+      <div class="case-head">
+        <div class="case-avatar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="case-meta">
+          <h4>Aさん（28歳・精神障害手帳3級）</h4>
+          <p>就労移行支援を利用して3ヶ月目。事務職での就職を強く希望している。</p>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-item ci-d">
+          <div class="ci-label">DEMAND — Aさんが表明していること</div>
+          <div class="ci-text">「もう3ヶ月通ったんだから、そろそろ就職したい。事務職で週5日フルタイムで働きたい。早く自立したいし、親にも心配かけたくない。」</div>
+        </div>
+        <div class="case-mid">アセスメントで見えてくること</div>
+        <div class="case-item ci-n">
+          <div class="ci-label">NEEDS — 評価・観察から明らかになったこと</div>
+          <div class="ci-text">
+            <ul style="margin-left:15px;line-height:2.1">
+              <li>睡眠リズムが不安定で週に1〜2日の欠席が続いている</li>
+              <li>ストレスが高まると作業パフォーマンスが著しく低下する</li>
+              <li>感覚過敏（聴覚）により、一般オフィス環境での集中維持が困難</li>
+              <li>現在の体力・体調では週5日フルタイムはリスクが高い</li>
+            </ul>
+          </div>
+        </div>
+        <div class="if-grid">
+          <div class="if-item if-bad-d">
+            <div class="if-label">デマンドだけに応じると…</div>
+            <div class="if-text">「わかりました、就活を始めましょう」→ 就職しても短期離職のリスクが高く、本人に挫折体験が積み重なる</div>
+          </div>
+          <div class="if-item if-bad-n">
+            <div class="if-label">ニーズだけを優先すると…</div>
+            <div class="if-text">「まだ就活はできません」と告げる→ 本人の意欲をくじき、自己決定を無視したパターナリズムに陥る</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-dark reveal">
+      <h4>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#2DD4BF"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        目指すべき支援：デマンドを「起点」にニーズへ
+      </h4>
+      <p>「就職したい」という気持ちを大切にしながら、「そのためにこそ、今は体調を安定させることが大事」と本人が腑に落ちるよう支援する。デマンドとニーズを橋渡しすることが支援者の役割です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 03 PATTERNS ═══════════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-tag">03 — 乖離のパターン</span>
+      <h2 class="sec-title">デマンドとニーズが食い違う、3つの型</h2>
+      <p class="sec-lead">就労移行支援の現場には、デマンドとニーズがずれる典型的なパターンがあります。どのパターンかを見極めることで、支援の方向性が変わります。</p>
+    </div>
+
+    <div class="patt-list">
+      <div class="patt-card reveal">
+        <div class="patt-icon pi-orange">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="patt-body">
+          <h4>① 過大デマンド型</h4>
+          <p>利用者が現状の力量・体調・準備状況を超えた要求をしているパターン。意欲はあるが、ニーズ（準備状況）が伴っていない。</p>
+          <div class="ex-box">
+            <span class="el el-d">DEMAND</span>「今すぐ就職して、フルタイムで働く」<br>
+            <span class="el el-n" style="margin-top:5px">NEEDS</span>まず通所安定・体力づくりが必要。週3日・短時間から段階的に。
+          </div>
+          <span class="bg-label">焦り・不安・早く自立したいという気持ちが背景にあることが多い</span>
+        </div>
+      </div>
+
+      <div class="patt-card reveal d1">
+        <div class="patt-icon pi-green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+        </div>
+        <div class="patt-body">
+          <h4>② 低デマンド型（デマンドの欠如）</h4>
+          <p>「何もしたくない」「どうせ無理」という状態で、デマンドが極めて低いかほぼ表明されないパターン。ニーズは存在するが、本人の意欲が起動していない。</p>
+          <div class="ex-box">
+            <span class="el el-d">DEMAND</span>「特にない。何でもいいです」<br>
+            <span class="el el-n" style="margin-top:5px">NEEDS</span>自己効力感の回復・就労への動機づけ・適切な職種探索
+          </div>
+          <span class="bg-label">自信喪失・無力感・長い療養期間が背景にあることが多い</span>
+        </div>
+      </div>
+
+      <div class="patt-card reveal d2">
+        <div class="patt-icon pi-purple">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9333EA" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="patt-body">
+          <h4>③ 方向違い型</h4>
+          <p>デマンドはあるが、その内容がニーズとかみ合っていないパターン。本人の特性・体力・状況と合致しない職種・環境・ペースを強く希望しているケースなど。</p>
+          <div class="ex-box">
+            <span class="el el-d">DEMAND</span>「大手オフィスで、事務職・週5フルタイムで働きたい」<br>
+            <span class="el el-n" style="margin-top:5px">NEEDS</span>感覚過敏・体力面から在宅・静かな環境・短時間勤務が適している
+          </div>
+          <span class="bg-label">自己理解の不足・「普通に働きたい」という社会的プレッシャーが背景にあることが多い</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn reveal">
+      <strong>注意：</strong>このパターン分類は「利用者の問題」を分類するためのものではありません。支援者が「どこに働きかけるべきか」を整理するための思考ツールです。乖離の原因を利用者に帰属させないことが重要です。
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 04 BRADSHAW ═══════════════ -->
+<section class="section-alt">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-tag">04 — 理論的背景</span>
+      <h2 class="sec-title">ニーズをさらに細かく分ける：<br>ブラッドショーの4分類（1972）</h2>
+      <p class="sec-lead">英国の社会政策学者ジョナサン・ブラッドショーは1972年、ニーズを4種類に分類しました。「デマンド」はこのうち「③ 表明されたニーズ」に対応します。この枠組みを知ることで、利用者のニーズをより多角的に捉えられるようになります。</p>
+    </div>
+
+    <div class="bshaw-grid reveal">
+      <div class="bshaw-item" style="border-top:3px solid #6366F1">
+        <div class="bshaw-num">TYPE 01</div>
+        <div class="bshaw-name" style="color:#6366F1">規範的ニーズ</div>
+        <div class="bshaw-desc">専門家や研究者が「これが必要」と定義したもの。就労支援では支援ガイドライン・標準的アセスメントが相当。</div>
+        <span class="bshaw-badge" style="background:#EEF2FF;color:#6366F1">支援者・専門職が定義</span>
+      </div>
+      <div class="bshaw-item" style="border-top:3px solid var(--needs)">
+        <div class="bshaw-num">TYPE 02</div>
+        <div class="bshaw-name" style="color:var(--needs)">感得されたニーズ</div>
+        <div class="bshaw-desc">本人が「これが必要かも」と感じているが、まだ言葉にしていないもの。深い対話の中で浮かび上がる。デマンドの前段階とも言える。</div>
+        <span class="bshaw-badge" style="background:var(--needs-light);color:var(--needs)">本人が感じている・未言語化</span>
+      </div>
+      <div class="bshaw-item" style="border-top:3px solid var(--demand)">
+        <div class="bshaw-num">TYPE 03</div>
+        <div class="bshaw-name" style="color:var(--demand)">表明されたニーズ ＝ デマンド</div>
+        <div class="bshaw-desc">感得されたニーズが言語化・行動化されたもの。支援への申請・要求として現れる。これが支援の文脈における「デマンド」に直接対応。</div>
+        <span class="bshaw-badge" style="background:var(--demand-light);color:var(--demand)">本人が言語化・表明している</span>
+      </div>
+      <div class="bshaw-item" style="border-top:3px solid #10B981">
+        <div class="bshaw-num">TYPE 04</div>
+        <div class="bshaw-name" style="color:#10B981">比較的ニーズ</div>
+        <div class="bshaw-desc">同じ状況の他者と比較することで生まれるニーズ。「他の人は○○できているのに自分は…」という形で現れることがある。</div>
+        <span class="bshaw-badge" style="background:#ECFDF5;color:#10B981">他者との比較から生まれる</span>
+      </div>
+    </div>
+
+    <div class="qt reveal">
+      <div class="qt-text">「ニーズとは個人・専門職・社会それぞれの視点から異なる形で定義されうるものであり、支援の文脈においては誰が何を根拠にニーズを判断するかが常に問われる」</div>
+      <div class="qt-src">社会福祉・社会政策文献における知見の整理。Bradshaw（1972）の分類枠組みをもとに、その後の社会福祉実践論を踏まえて要約。</div>
+    </div>
+
+    <!-- 顕在・潜在ニーズ -->
+    <div class="reveal" style="margin-top:20px">
+      <div style="background:var(--bg);border-radius:var(--radius);padding:22px 24px;border:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--text-muted);text-transform:uppercase;margin-bottom:14px">補足：顕在的ニーズと潜在的ニーズ</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="background:var(--surface);border-radius:9px;padding:14px 16px;border:1px solid var(--border)">
+            <div style="font-size:12px;font-weight:700;color:var(--needs);margin-bottom:5px">顕在的ニーズ</div>
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.65">本人も支援者も気づいており、問題として認識されているニーズ。</div>
+          </div>
+          <div style="background:var(--surface);border-radius:9px;padding:14px 16px;border:1px solid var(--border)">
+            <div style="font-size:12px;font-weight:700;color:#9333EA;margin-bottom:5px">潜在的ニーズ</div>
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.65">本人が気づいていない、または認めたくないニーズ。支援者の丁寧なアセスメントによって初めて可視化される。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 05 ASSESSMENT ═══════════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-tag">05 — アセスメントの役割</span>
+      <h2 class="sec-title">ニーズは「見えるもの」ではなく<br>「明らかにするもの」</h2>
+      <p class="sec-lead">ニーズは自然に見えてくるものではありません。構造的なアセスメントのプロセスを通じて初めて明確になります。就労移行支援で標準的に行われるステップを見ていきましょう。</p>
+    </div>
+
+    <div class="card reveal" style="padding:28px 26px">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-line"><div class="flow-num">1</div><div class="flow-connector"></div></div>
+          <div class="flow-content">
+            <h4>デマンドを丁寧に受け取る</h4>
+            <p>まず「何を求めているか」を否定せずに傾聴する。デマンドはその人の価値観・希望・不安の表れ。ここでラポール（信頼関係）の土台が生まれる。</p>
+            <div class="flow-sub flow-sub-d">「なぜ急いで就職したいのですか？」「どんな仕事をしたいですか？」「将来どうなっていたいですか？」</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-line"><div class="flow-num">2</div><div class="flow-connector"></div></div>
+          <div class="flow-content">
+            <h4>多面的に情報を集める</h4>
+            <p>通所記録・体調の波・作業場面の観察・医療機関の情報・家族からの情報など、複数の視点からデータを集める。主観と客観の両方が必要。</p>
+            <div class="tags" style="margin-top:10px">
+              <span class="tag tn">通所状況</span><span class="tag tn">作業能力評価</span><span class="tag tn">体調・睡眠</span><span class="tag tn">対人関係</span><span class="tag tn">医療・服薬情報</span><span class="tag tn">家庭環境</span>
+            </div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-line"><div class="flow-num">3</div><div class="flow-connector"></div></div>
+          <div class="flow-content">
+            <h4>ニーズを言語化・整理する</h4>
+            <p>収集した情報を統合し、「何が課題か」「何が整えば就労が安定するか」を支援チームで整理する。ICF（国際生活機能分類）などのフレームワークも有用。</p>
+            <div class="flow-sub flow-sub-n">就労継続に必要な条件（体調安定・職場環境のマッチ・サポート体制）を明文化する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-line"><div class="flow-num">4</div><div class="flow-connector"></div></div>
+          <div class="flow-content">
+            <h4>デマンドとニーズを照合する</h4>
+            <p>一致しているか、乖離があるか。乖離がある場合、どのパターンか（過大・低・方向違い）を見極める。</p>
+            <div class="flow-step-result">
+              <span class="res-ok">✓ 一致 → 支援計画策定へ</span>
+              <span class="res-warn">! 乖離あり → 次のステップへ</span>
+            </div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-line"><div class="flow-num">5</div></div>
+          <div class="flow-content" style="padding-bottom:0">
+            <h4>本人のニーズへの気づきを支援する</h4>
+            <p>乖離がある場合、「あなたには○○が必要です」と告げるのではなく、対話を通じて本人自身がニーズに気づけるよう促す。これがエンパワメントの核心。</p>
+            <div class="flow-sub flow-sub-i">「就職したい気持ちは大切にしたい。そのために、今どんな準備が大事だと思いますか？」</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 06 INTEGRATION ═══════════════ -->
+<section class="section-alt">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-tag">06 — 統合の実践</span>
+      <h2 class="sec-title">デマンドを「入口」に、<br>ニーズを「目的地」に</h2>
+      <p class="sec-lead">支援の理想は、デマンドとニーズを対立させることではなく、デマンドを起点として、利用者がニーズに自ら気づき、支援計画に主体的に関われるようにすることです。</p>
+    </div>
+
+    <div class="bridge reveal">
+      <div class="bridge-row dr">
+        <div class="bridge-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--demand)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <span>「早く就職したい」（デマンド）</span>
+      </div>
+
+      <div class="bridge-arrow">
+        <div class="bridge-arrow-line"></div>
+        <div class="bridge-center">支援者の働きかけ</div>
+      </div>
+
+      <div class="bridge-list">
+        <div class="bridge-list-title">統合のプロセス（支援者が行うこと）</div>
+        <ul>
+          <li>「就職したい」という気持ちを受け止め、その背景（なぜ急ぐのか）を丁寧に聴く</li>
+          <li>作業場面・通所状況からアセスメントを行い、ニーズを明確化する</li>
+          <li>「就職のためにこそ、今○○が大切」という文脈でニーズを共有する</li>
+          <li>本人が「そうか、まずこれをやろう」と腑に落ちる支援計画を一緒につくる</li>
+        </ul>
+      </div>
+
+      <div class="bridge-arrow" style="margin-top:4px">
+        <div class="bridge-arrow-line" style="background:linear-gradient(to bottom,var(--integration),var(--needs))"></div>
+      </div>
+
+      <div class="bridge-row nr" style="margin-top:4px">
+        <div class="bridge-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--needs)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <span>ニーズに基づいた支援計画（本人が主体的に合意）</span>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:16px">
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:14px">大切なのは「デマンドが間違っているからニーズに修正する」という発想ではなく、<strong style="color:var(--text)">「デマンドに込められた本人の思いを活かしながら、ニーズを共有していく」</strong>という視点です。</p>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.85">このプロセスは時間がかかることもあります。利用者が「自分には○○が必要なのかもしれない」と気づくまでには、繰り返しの対話・体験・信頼関係の積み重ねが必要です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 07 ETHICS ═══════════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-tag">07 — 倫理的視点</span>
+      <h2 class="sec-title">自己決定の尊重と<br>「お節介」のはざまで</h2>
+      <p class="sec-lead">デマンドとニーズの区別は、常に倫理的な緊張をはらんでいます。「本人のため」という名目で、支援者のニーズ判断が自己決定を侵害するパターナリズムに陥るリスクを意識し続けることが必要です。</p>
+    </div>
+
+    <div class="ethics-scale reveal">
+      <div class="scale-ends">
+        <div class="scale-end left">
+          <span class="scale-end-label">デマンド優先</span>
+          <div class="scale-end-desc">本人の言うことだけをする。真の課題が解決されないまま就職し、挫折を繰り返す。</div>
+        </div>
+        <div class="scale-center-label">
+          <span style="color:var(--integration)">統合</span>
+          <small>目指す地点</small>
+        </div>
+        <div class="scale-end right">
+          <span class="scale-end-label">ニーズ優先</span>
+          <div class="scale-end-desc">支援者が「正しい」と思うことを押しつける。パターナリズム・権利侵害に陥る。</div>
+        </div>
+      </div>
+      <div class="scale-track"></div>
+      <div class="scale-pointer"><div class="scale-pointer-dot"></div></div>
+
+      <div class="risk-grid" style="margin-top:20px">
+        <div class="risk-d">
+          <div class="risk-label">過度なデマンド追従のリスク</div>
+          <ul class="risk-items">
+            <li>準備不足のまま就職→早期離職</li>
+            <li>挫折体験の積み重ね</li>
+            <li>専門職としての役割の放棄</li>
+          </ul>
+        </div>
+        <div class="risk-n">
+          <div class="risk-label">パターナリズムのリスク</div>
+          <ul class="risk-items">
+            <li>利用者の意欲・主体性の喪失</li>
+            <li>支援者への依存強化</li>
+            <li>自己決定権の侵害</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ethics-q" style="margin-top:14px">
+        <strong>倫理的実践のための自己点検</strong>
+        「このニーズ判断は、利用者の意見を十分に聴いた上でのものか？」「利用者が異議を唱えたとき、私はどう応えるか？」「このニーズは客観的な根拠があるか、それとも私の価値観の押しつけではないか？」――これらの問いを持ち続けることが、パターナリズムを防ぐ第一歩です。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 08 SUMMARY ═══════════════ -->
+<section class="section-alt">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-tag">08 — まとめ</span>
+      <h2 class="sec-title">支援の質を左右する、3つの核心</h2>
+    </div>
+    <div class="summary-grid reveal">
+      <div class="sum-card">
+        <div class="sum-icon" style="background:var(--demand-light)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--demand)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h4 style="color:var(--demand)">デマンドを大切に</h4>
+        <p>「要求が間違っている」と切り捨てない。デマンドは本人の意欲・価値観の表れ。支援の入口として尊重する。</p>
+      </div>
+      <div class="sum-card">
+        <div class="sum-icon" style="background:var(--needs-light)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--needs)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <h4 style="color:var(--needs)">ニーズを見立てる</h4>
+        <p>アセスメントによって客観的に見立て、支援計画の根拠を作る。「勘」や「経験則」だけに頼らない。</p>
+      </div>
+      <div class="sum-card">
+        <div class="sum-icon" style="background:var(--integration-light)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--integration)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h4 style="color:var(--integration)">対話で橋渡しを</h4>
+        <p>乖離があるとき、「正解」を押しつけない。本人がニーズに気づけるよう、対話を重ねる。</p>
+      </div>
+    </div>
+    <div class="closing-block reveal">
+      <p class="closing-text">「デマンドに応える」でも「ニーズを満たす」でもなく、<br><em>デマンドを起点にしてニーズへと共に歩く</em>――<br>それが就労移行支援における支援関係の本質です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SOURCES ═══════════════ -->
+<section class="footer-section">
+  <div class="wrap">
+    <span class="sec-tag">参考情報源</span>
+    <h2 class="sec-title">クリックして確認できる情報ソース</h2>
+    <p style="font-size:13.5px;color:rgba(255,255,255,.45);margin-bottom:0;line-height:1.75">この図解の内容は以下の文献・公式資料をもとに作成しています。</p>
+    <ul class="sources">
+      <li>
+        <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/service/shurou.html" target="_blank" rel="noopener">厚生労働省 — 就労移行支援の制度概要</a>
+        <span class="source-note">就労移行支援の目的・対象・支援内容に関する公式情報</span>
+      </li>
+      <li>
+        <a href="https://www.who.int/standards/classifications/international-classification-of-functioning-disability-and-health" target="_blank" rel="noopener">WHO — ICF（国際生活機能分類）</a>
+        <span class="source-note">ニーズアセスメントの枠組みとして広く使用される国際分類</span>
+      </li>
+      <li>
+        <a href="https://www.jacsw.or.jp/01_csw/05_rinrikoryo/files/rinri_koryo.pdf" target="_blank" rel="noopener">日本社会福祉士会 — 倫理綱領（PDF）</a>
+        <span class="source-note">自己決定の尊重・パターナリズム回避に関する倫理基準の参照元</span>
+      </li>
+      <li>
+        <a href="https://www.dinf.ne.jp/doc/japanese/resource/accessjapan/AJ2003/data_03/d0021.html" target="_blank" rel="noopener">障害保健福祉研究情報システム — ニーズとデマンドに関する解説</a>
+        <span class="source-note">ブラッドショーのニーズ分類を含む福祉的ニーズ概念の解説</span>
+      </li>
+      <li>
+        <a href="https://www.ncnp.go.jp/hospital/patient/soudan/syurou.html" target="_blank" rel="noopener">国立精神・神経医療研究センター — 精神障害者の就労支援</a>
+        <span class="source-note">精神障害者の就労移行支援における実践的な知見</span>
+      </li>
+      <li>
+        <a href="https://empowerment.or.jp/" target="_blank" rel="noopener">就労移行支援実践・エンパワメントに関する実践資料</a>
+        <span class="source-note">デマンドを起点にしたエンパワメント支援の実践的参考資料</span>
+      </li>
+    </ul>
+    <div class="footer-note">
+      原典：Bradshaw, J. (1972). A taxonomy of social need. <em>New Society</em>, 19(496), 640–642.<br>
+      この図解は教育・研修用途に作成されています。個別の支援判断については専門職の判断に基づいてください。
+    </div>
+  </div>
+</section>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll',()=>{
+    const p=(window.pageYOffset/(document.documentElement.scrollHeight-window.innerHeight))*100;
+    document.getElementById('progress-bar').style.width=p+'%';
+  });
+
+  // Scroll reveal
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
