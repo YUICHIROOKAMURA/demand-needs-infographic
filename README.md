@@ -1,0 +1,2 @@
+# demand-needs-infographic
+デマンドとニーズ
